@@ -1,0 +1,78 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    name: 📦 Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.x'
+          channel: 'stable'
+          cache: true
+      
+      - name: Install dependencies
+        run: flutter pub get
+      
+      # ============= WEB =============
+      - name: Build Web
+        run: flutter build web --release --base-href "/modulos/"
+      
+      - name: Create zip Web
+        run: |
+          cd build/web
+          7z a ../../web-build.zip .
+      
+      # ============= ANDROID =============
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      
+      - name: Build APK
+        run: flutter build apk --release
+      
+      - name: Build App Bundle
+        run: flutter build appbundle --release
+      
+      # ============= WINDOWS =============
+      - name: Build Windows
+        run: flutter build windows --release
+      
+      - name: Create zip Windows
+        run: |
+          7z a windows-build.zip build/windows/x64/runner/Release/
+      
+      # ============= LINUX =============
+      - name: Build Linux
+        run: flutter build linux --release
+      
+      - name: Create zip Linux
+        run: |
+          7z a linux-build.zip build/linux/x64/release/bundle/
+      
+      # ============= CREATE RELEASE =============
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+            web-build.zip
+            windows-build.zip
+            linux-build.zip
+          draft: false
+          prerelease: ${{ contains(github.ref, '-') }}

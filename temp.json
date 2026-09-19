@@ -1,0 +1,433 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Modulos API",
+    "description": "API REST del sistema modular Dart/Flutter",
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "http://localhost:8080" }
+  ],
+  "tags": [
+    { "name": "Clientes" },
+    { "name": "Productos" },
+    { "name": "Usuarios" },
+    { "name": "Ventas" },
+    { "name": "Citas" },
+    { "name": "Inventario" },
+    { "name": "Reportes" },
+    { "name": "Notificaciones" },
+    { "name": "Configuracion" }
+  ],
+  "paths": {
+    "/api/clientes": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Listar clientes",
+        "operationId": "obtenerClientes",
+        "responses": {
+          "200": { "description": "Lista de clientes" }
+        }
+      },
+      "post": {
+        "tags": ["Clientes"],
+        "summary": "Crear cliente",
+        "operationId": "crearCliente",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["id", "nombre"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "nombre": { "type": "string" },
+                  "email": { "type": "string" },
+                  "telefono": { "type": "string" },
+                  "rfc": { "type": "string" },
+                  "direccion": { "type": "string" },
+                  "notas": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Cliente creado" } }
+      }
+    },
+    "/api/clientes/{id}": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Obtener cliente",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Clientes"],
+        "summary": "Actualizar cliente",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Clientes"],
+        "summary": "Eliminar cliente",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/productos": {
+      "get": {
+        "tags": ["Productos"],
+        "summary": "Listar productos",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Productos"],
+        "summary": "Crear producto",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/usuarios": {
+      "get": {
+        "tags": ["Usuarios"],
+        "summary": "Listar usuarios",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Usuarios"],
+        "summary": "Crear usuario",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/ventas": {
+      "get": {
+        "tags": ["Ventas"],
+        "summary": "Listar ventas",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Ventas"],
+        "summary": "Crear venta",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/citas": {
+      "get": {
+        "tags": ["Citas"],
+        "summary": "Listar citas",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Citas"],
+        "summary": "Crear cita",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["id", "cliente_id", "usuario_id", "titulo", "fecha_inicio", "fecha_fin"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "cliente_id": { "type": "string" },
+                  "usuario_id": { "type": "string" },
+                  "titulo": { "type": "string" },
+                  "descripcion": { "type": "string" },
+                  "fecha_inicio": { "type": "string", "format": "date-time" },
+                  "fecha_fin": { "type": "string", "format": "date-time" },
+                  "estado": { "type": "string", "enum": ["pendiente", "confirmada", "completada", "cancelada"] },
+                  "notas": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/citas/{id}": {
+      "get": {
+        "tags": ["Citas"],
+        "summary": "Obtener cita",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Citas"],
+        "summary": "Actualizar cita",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Citas"],
+        "summary": "Eliminar cita",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/citas/cliente/{clienteId}": {
+      "get": {
+        "tags": ["Citas"],
+        "summary": "Citas por cliente",
+        "parameters": [{ "name": "clienteId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/citas/usuario/{usuarioId}": {
+      "get": {
+        "tags": ["Citas"],
+        "summary": "Citas por usuario",
+        "parameters": [{ "name": "usuarioId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/citas/fecha/{fecha}": {
+      "get": {
+        "tags": ["Citas"],
+        "summary": "Citas por fecha",
+        "parameters": [{ "name": "fecha", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/inventario": {
+      "get": {
+        "tags": ["Inventario"],
+        "summary": "Listar inventario",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/inventario/{id}": {
+      "get": {
+        "tags": ["Inventario"],
+        "summary": "Obtener item",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Inventario"],
+        "summary": "Actualizar stock",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/inventario/producto/{productoId}": {
+      "get": {
+        "tags": ["Inventario"],
+        "summary": "Inventario por producto",
+        "parameters": [{ "name": "productoId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/inventario/stock-bajo": {
+      "get": {
+        "tags": ["Inventario"],
+        "summary": "Stock bajo",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/inventario/movimientos": {
+      "get": {
+        "tags": ["Inventario"],
+        "summary": "Listar movimientos",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Inventario"],
+        "summary": "Registrar movimiento",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["id", "producto_id", "tipo", "cantidad"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "producto_id": { "type": "string" },
+                  "tipo": { "type": "string", "enum": ["entrada", "salida", "ajuste"] },
+                  "cantidad": { "type": "integer" },
+                  "motivo": { "type": "string" },
+                  "referencia": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/inventario/movimientos/{productoId}": {
+      "get": {
+        "tags": ["Inventario"],
+        "summary": "Movimientos por producto",
+        "parameters": [{ "name": "productoId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/reportes/resumen": {
+      "get": {
+        "tags": ["Reportes"],
+        "summary": "Resumen dashboard",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/reportes/ventas/diarias": {
+      "get": {
+        "tags": ["Reportes"],
+        "summary": "Ventas diarias",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/reportes/ventas/periodo": {
+      "get": {
+        "tags": ["Reportes"],
+        "summary": "Ventas por periodo",
+        "parameters": [
+          { "name": "inicio", "in": "query", "required": true, "schema": { "type": "string" } },
+          { "name": "fin", "in": "query", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/reportes/productos/mas-vendidos": {
+      "get": {
+        "tags": ["Reportes"],
+        "summary": "Productos mas vendidos",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/notificaciones": {
+      "get": {
+        "tags": ["Notificaciones"],
+        "summary": "Listar notificaciones",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Notificaciones"],
+        "summary": "Crear notificacion",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["id", "titulo", "mensaje", "tipo"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "titulo": { "type": "string" },
+                  "mensaje": { "type": "string" },
+                  "tipo": { "type": "string", "enum": ["info", "alerta", "exito", "error", "sistema"] },
+                  "usuario_id": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/notificaciones/{id}": {
+      "get": {
+        "tags": ["Notificaciones"],
+        "summary": "Obtener notificacion",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Notificaciones"],
+        "summary": "Eliminar notificacion",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/notificaciones/usuario/{usuarioId}": {
+      "get": {
+        "tags": ["Notificaciones"],
+        "summary": "Notificaciones por usuario",
+        "parameters": [{ "name": "usuarioId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/notificaciones/no-leidas": {
+      "get": {
+        "tags": ["Notificaciones"],
+        "summary": "No leidas",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/notificaciones/{id}/leer": {
+      "put": {
+        "tags": ["Notificaciones"],
+        "summary": "Marcar como leida",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/notificaciones/leer-todas": {
+      "put": {
+        "tags": ["Notificaciones"],
+        "summary": "Marcar todas leidas",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/configuracion": {
+      "get": {
+        "tags": ["Configuracion"],
+        "summary": "Listar configuraciones",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Configuracion"],
+        "summary": "Crear configuracion",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["id", "clave", "valor"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "clave": { "type": "string" },
+                  "valor": { "type": "string" },
+                  "descripcion": { "type": "string" },
+                  "tipo": { "type": "string", "enum": ["texto", "numero", "booleano", "fecha", "json"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/configuracion/{id}": {
+      "get": {
+        "tags": ["Configuracion"],
+        "summary": "Obtener configuracion",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Configuracion"],
+        "summary": "Actualizar configuracion",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Configuracion"],
+        "summary": "Eliminar configuracion",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/configuracion/clave/{clave}": {
+      "get": {
+        "tags": ["Configuracion"],
+        "summary": "Obtener por clave",
+        "parameters": [{ "name": "clave", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}
